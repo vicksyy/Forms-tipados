@@ -1,7 +1,7 @@
 :root {
-  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-  color: #2a2a2a;
-  background: #efefef;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #e8eef4;
+  background: #1f2933;
 }
 
 * {
@@ -10,32 +10,50 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #ffffff, #efefef 45%);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% -10%, rgba(62, 146, 204, 0.16), transparent 38%),
+    radial-gradient(circle at 85% 0%, rgba(46, 94, 170, 0.18), transparent 33%),
+    #1f2933;
 }
 
 .layout {
-  max-width: 1180px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px 20px 40px;
 }
 
 h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #3a3a3a;
+  margin: 0 0 18px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #dfe7ef;
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #d6d6d6;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  background: #24303b;
+  border: 1px solid #344658;
+  border-radius: 4px;
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(10, 18, 28, 0.28);
 }
 
 .form-grid {
   display: grid;
   gap: 8px;
+}
+
+.form-grid h2 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  color: #f5f8fb;
+}
+
+.form-grid label {
+  color: #c2ceda;
+  font-size: 0.9rem;
 }
 
 input,
@@ -47,75 +65,136 @@ button {
 input,
 select {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #bcccdc;
-  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #41576d;
+  border-radius: 3px;
+  background: #202a33;
+  color: #f0f5fa;
+}
+
+input::placeholder {
+  color: #91a2b4;
 }
 
 .inline-checkbox {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 6px;
-}
-
-.inline-checkbox input {
-  width: auto;
+  margin-top: 8px;
 }
 
 .checkbox-root {
   width: 20px;
   height: 20px;
-  border: 1px solid #627d98;
-  border-radius: 4px;
+  border: 1px solid #5b7287;
+  border-radius: 2px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: #202a33;
 }
 
 .checkbox-indicator {
   font-size: 14px;
   line-height: 1;
+  color: #7bd88f;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star-btn {
+  background: transparent;
+  border: 1px solid #5d7387;
+  color: #8ea0b1;
+  padding: 6px 8px;
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.star-btn.active {
+  color: #ffd166;
+  border-color: #9a8151;
+  background: rgba(255, 209, 102, 0.08);
+}
+
+.status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.status-toggle.completed {
+  background: rgba(123, 216, 143, 0.12);
+  border-color: #5d8d68;
+  color: #b7e7c1;
+}
+
+.status-toggle.pending {
+  background: transparent;
+  border-color: #5d7387;
+  color: #d7e0e8;
+}
+
+.status-icon {
+  font-size: 0.95rem;
 }
 
 .actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 button {
-  border: 0;
-  border-radius: 999px;
+  border: 1px solid transparent;
+  border-radius: 3px;
   padding: 9px 14px;
-  background: #e60012;
-  color: #fff;
+  background: #3e92cc;
+  color: #f6fbff;
   cursor: pointer;
   font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 button:disabled {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 button.secondary {
-  background: #767676;
+  background: transparent;
+  color: #d7e0e8;
+  border-color: #5d7387;
 }
 
 button.danger {
-  background: #b61d1d;
+  background: transparent;
+  color: #ffb4ad;
+  border-color: #8c5d5a;
 }
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(16, 42, 67, 0.55);
+  background: rgba(20, 31, 41, 0.68);
+  backdrop-filter: blur(2px);
   display: grid;
   place-items: center;
   padding: 16px;
+  z-index: 20;
 }
 
 .modal-content {
@@ -133,8 +212,8 @@ button.danger {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #d0d0d0;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #3a4b5c;
+  padding-bottom: 12px;
 }
 
 .brand {
@@ -145,31 +224,38 @@ button.danger {
 
 .brand h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: #eef3f8;
 }
 
 .brand-icon {
   width: 18px;
   height: 28px;
-  border: 2px solid #6f6f6f;
+  border: 1px solid #6d8297;
   border-radius: 4px;
-  background: linear-gradient(#ececec, #cbcbcb);
+  background: linear-gradient(#334454, #253340);
 }
 
 .profile-pill {
-  background: #ececec;
-  border: 1px solid #c8c8c8;
-  border-radius: 999px;
+  background: #2a3744;
+  border: 1px solid #415668;
+  color: #c9d6e2;
+  border-radius: 3px;
   padding: 6px 12px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.top-actions {
+  margin-top: 12px;
 }
 
 .nintendo-subbar {
   display: flex;
   gap: 18px;
-  color: #5b5b5b;
-  font-size: 0.95rem;
-  margin: 12px 0 16px;
+  color: #adbac7;
+  font-size: 0.88rem;
+  margin: 12px 0 18px;
 }
 
 .nintendo-subbar p {
@@ -179,10 +265,10 @@ button.danger {
 .empty-message {
   margin: 0;
   padding: 16px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1px dashed #c7c7c7;
-  color: #4f4f4f;
+  border-radius: 3px;
+  background: #24303b;
+  border: 1px dashed #4b6175;
+  color: #c2cfdb;
 }
 
 .card-grid {
@@ -190,49 +276,92 @@ button.danger {
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 }
 
 .nintendo-card {
-  background: #fff;
-  border: 1px solid #cbcbcb;
-  border-radius: 13px;
-  padding: 10px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .cover-wrapper {
-  border-radius: 12px;
+  border-radius: 2px;
   overflow: hidden;
-  border: 1px solid #a6a6a6;
-  background: #dfe9f5;
+  border: 1px solid #4a5f74;
+  background: #202d39;
 }
 
 .cover-image {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: #1d2731;
 }
 
 .cover-fallback {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 5;
   display: grid;
   place-items: center;
   padding: 12px;
   text-align: center;
   font-weight: 700;
-  color: #2f5f88;
-  background: linear-gradient(135deg, #ebf4ff, #d8e8ff);
+  color: #dce7f2;
+  background: linear-gradient(145deg, #324556, #263545);
 }
 
 .game-meta {
   margin-top: 8px;
 }
 
+.game-meta strong {
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: #f0f5fa;
+}
+
 .game-meta p {
   margin: 3px 0 0;
-  color: #5d5d5d;
-  font-size: 0.92rem;
+  color: #afbdca;
+  font-size: 0.82rem;
+}
+
+.game-rating {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ffd166;
+  letter-spacing: 0.04em;
+}
+
+.game-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.game-status.done {
+  color: #93d8a3;
+}
+
+.game-status.pending {
+  color: #afbdca;
+}
+
+.status-dot {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .layout {
+    padding: 20px 14px 30px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

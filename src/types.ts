@@ -14,4 +14,5 @@ export interface VideoGame {
   year: number;
   completed: boolean;
   coverUrl: string;
+  rating: number;
 }

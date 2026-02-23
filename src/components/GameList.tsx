@@ -5,9 +5,18 @@ interface GameListProps {
   games: VideoGame[];
   onStartEdit: (game: VideoGame) => void;
   onDelete: (id: string) => void;
+  onOpenCreate: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function GameList({ games, onStartEdit, onDelete }: GameListProps) {
+export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }: GameListProps) {
+  const renderStars = (rating: number): string => {
+    if (rating <= 0) {
+      return '☆☆☆☆☆';
+    }
+
+    return `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`;
+  };
+
   const handleEditClick =
     (game: VideoGame) =>
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -32,6 +41,12 @@ export default function GameList({ games, onStartEdit, onDelete }: GameListProps
         <div className="profile-pill">Jugador</div>
       </header>
 
+      <div className="top-actions">
+        <button type="button" onClick={onOpenCreate}>
+          Anadir videojuego
+        </button>
+      </div>
+
       <div className="nintendo-subbar">
         <p>Date acquired (newest first)</p>
         <p>All({games.length})</p>
@@ -55,7 +70,11 @@ export default function GameList({ games, onStartEdit, onDelete }: GameListProps
                 <p>
                   {game.platform} - {game.year}
                 </p>
-                <p>{game.completed ? 'Completado' : 'Pendiente'}</p>
+                <p className="game-rating">{renderStars(game.rating)}</p>
+                <p className={game.completed ? 'game-status done' : 'game-status pending'}>
+                  <span className="status-dot">{game.completed ? '✔' : '○'}</span>
+                  {game.completed ? 'Completado' : 'Pendiente'}
+                </p>
               </div>
               <div className="actions">
                 <button type="button" onClick={handleEditClick(game)}>

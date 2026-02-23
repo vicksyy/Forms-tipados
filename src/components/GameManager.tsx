@@ -32,6 +32,7 @@ function isVideoGame(value: unknown): value is VideoGame {
   const year = value.year;
   const completed = value.completed;
   const coverUrl = value.coverUrl;
+  const rating = value.rating;
 
   return (
     typeof id === 'string' &&
@@ -40,11 +41,14 @@ function isVideoGame(value: unknown): value is VideoGame {
     isPlatform(platform) &&
     typeof year === 'number' &&
     typeof completed === 'boolean' &&
-    typeof coverUrl === 'string'
+    typeof coverUrl === 'string' &&
+    typeof rating === 'number' &&
+    rating >= 0 &&
+    rating <= 5
   );
 }
 
-function isLegacyVideoGame(value: unknown): value is Omit<VideoGame, 'coverUrl'> {
+function isLegacyVideoGame(value: unknown): value is Omit<VideoGame, 'coverUrl' | 'rating'> {
   if (!isRecord(value)) {
     return false;
   }
@@ -62,6 +66,29 @@ function isLegacyVideoGame(value: unknown): value is Omit<VideoGame, 'coverUrl'>
     isPlatform(platform) &&
     typeof year === 'number' &&
     typeof completed === 'boolean'
+  );
+}
+
+function isSemiLegacyVideoGame(value: unknown): value is Omit<VideoGame, 'rating'> {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  const id = value.id;
+  const title = value.title;
+  const platform = value.platform;
+  const year = value.year;
+  const completed = value.completed;
+  const coverUrl = value.coverUrl;
+
+  return (
+    typeof id === 'string' &&
+    typeof title === 'string' &&
+    typeof platform === 'string' &&
+    isPlatform(platform) &&
+    typeof year === 'number' &&
+    typeof completed === 'boolean' &&
+    typeof coverUrl === 'string'
   );
 }
 
@@ -88,8 +115,12 @@ function loadGamesFromStorage(): VideoGame[] {
         return item;
       }
 
+      if (isSemiLegacyVideoGame(item)) {
+        return { ...item, rating: 0 };
+      }
+
       if (isLegacyVideoGame(item)) {
-        return { ...item, coverUrl: '' };
+        return { ...item, coverUrl: '', rating: 0 };
       }
 
       return null;
@@ -169,14 +200,12 @@ export default function GameManager() {
   return (
     <main className="layout">
       <h1>Gestion de Videojuegos</h1>
-
-      <div className="actions">
-        <button type="button" onClick={handleOpenCreateClick}>
-          Anadir videojuego
-        </button>
-      </div>
-
-      <GameList games={games} onStartEdit={handleStartEdit} onDelete={handleDeleteGame} />
+      <GameList
+        games={games}
+        onStartEdit={handleStartEdit}
+        onDelete={handleDeleteGame}
+        onOpenCreate={handleOpenCreateClick}
+      />
 
       {isFormOpen && (
         <div className="modal-overlay" role="dialog" aria-modal="true">

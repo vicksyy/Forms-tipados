@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
-import * as Checkbox from '@radix-ui/react-checkbox';
 import type { Platform, VideoGame } from '../types';
 
 const PLATFORMS: Platform[] = ['PS1', 'PS2', 'PS3', 'PS4', 'PS5', 'Nintendo', 'PC'];
@@ -19,7 +18,8 @@ const INITIAL_FORM: GameInput = {
   platform: 'PS5',
   year: 2024,
   completed: false,
-  coverUrl: ''
+  coverUrl: '',
+  rating: 0
 };
 
 const isPlatform = (value: string): value is Platform => {
@@ -46,7 +46,8 @@ export default function GameForm({
       platform: editingGame.platform,
       year: editingGame.year,
       completed: editingGame.completed,
-      coverUrl: editingGame.coverUrl
+      coverUrl: editingGame.coverUrl,
+      rating: editingGame.rating
     });
   }, [editingGame]);
 
@@ -72,9 +73,17 @@ export default function GameForm({
     setFormData((prev) => ({ ...prev, coverUrl: e.target.value }));
   };
 
-  const handleCompletedChange = (checked: boolean | 'indeterminate') => {
-    setFormData((prev) => ({ ...prev, completed: checked === true }));
+  const handleCompletedToggle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setFormData((prev) => ({ ...prev, completed: !prev.completed }));
   };
+
+  const handleRatingClick =
+    (rating: number) =>
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setFormData((prev) => ({ ...prev, rating: prev.rating === rating ? 0 : rating }));
+    };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -143,17 +152,31 @@ export default function GameForm({
         placeholder="https://..."
       />
 
-      <label className="inline-checkbox" htmlFor="completed">
-        <Checkbox.Root
-          id="completed"
-          checked={formData.completed}
-          onCheckedChange={handleCompletedChange}
-          className="checkbox-root"
-        >
-          <Checkbox.Indicator className="checkbox-indicator">✓</Checkbox.Indicator>
-        </Checkbox.Root>
-        Completado
-      </label>
+      <label>Valoracion</label>
+      <div className="rating-row" role="group" aria-label="Valorar videojuego con estrellas">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            className={formData.rating >= star ? 'star-btn active' : 'star-btn'}
+            onClick={handleRatingClick(star)}
+            aria-label={`Valorar con ${star} estrella${star > 1 ? 's' : ''}`}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+
+      <label>Estado</label>
+      <button
+        type="button"
+        className={formData.completed ? 'status-toggle completed' : 'status-toggle pending'}
+        onClick={handleCompletedToggle}
+        aria-pressed={formData.completed}
+      >
+        <span className="status-icon">{formData.completed ? '✔' : '○'}</span>
+        {formData.completed ? 'Completado' : 'Pendiente'}
+      </button>
 
       <div className="actions">
         <button type="submit" disabled={isSubmitting}>
