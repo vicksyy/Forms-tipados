@@ -226,7 +226,17 @@ export default function GameManager() {
 
   return (
     <main className="layout">
-      <h1>Gestion de Videojuegos</h1>
+      <h1 className="app-title">
+        <span className="app-title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+            <path
+              d="M7.5 7.25h9a5.75 5.75 0 0 1 5.62 6.96l-.85 3.82a2.5 2.5 0 0 1-4.23 1.2l-1.57-1.57a2 2 0 0 0-1.41-.58h-4.12a2 2 0 0 0-1.41.58l-1.57 1.57a2.5 2.5 0 0 1-4.23-1.2l-.85-3.82A5.75 5.75 0 0 1 7.5 7.25Zm-1 4.5h-1.5v1.5h1.5v1.5H8v-1.5h1.5v-1.5H8v-1.5H6.5v1.5Zm10 0a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Zm2.75-1.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        GesGame
+      </h1>
       <GameList
         games={games}
         onStartEdit={handleStartEdit}

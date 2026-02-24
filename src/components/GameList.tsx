@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import type { VideoGame } from '../types';
 
@@ -9,6 +10,8 @@ interface GameListProps {
 }
 
 export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }: GameListProps) {
+  const [pendingDeleteGame, setPendingDeleteGame] = useState<VideoGame | null>(null);
+
   const renderStars = (rating: number) => {
     return (
       <span className="stars" aria-label={`Valoracion ${rating} de 5`}>
@@ -29,21 +32,30 @@ export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }:
     };
 
   const handleDeleteClick =
-    (id: string) =>
+    (game: VideoGame) =>
     (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      onDelete(id);
+      setPendingDeleteGame(game);
     };
+
+  const handleCancelDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setPendingDeleteGame(null);
+  };
+
+  const handleConfirmDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (pendingDeleteGame === null) {
+      return;
+    }
+
+    onDelete(pendingDeleteGame.id);
+    setPendingDeleteGame(null);
+  };
 
   return (
     <section className="nintendo-shell" aria-label="Listado de videojuegos">
-      <header className="nintendo-topbar">
-        <div className="brand">
-          <span className="brand-icon" />
-          <h2>Virtual Game Cards</h2>
-        </div>
-        <div className="profile-pill">Jugador</div>
-      </header>
+      <header className="nintendo-topbar" />
 
       <div className="top-actions">
         <button type="button" onClick={onOpenCreate}>
@@ -52,8 +64,7 @@ export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }:
       </div>
 
       <div className="nintendo-subbar">
-        <p>Date acquired (newest first)</p>
-        <p>All({games.length})</p>
+        <p>Total({games.length})</p>
       </div>
 
       {games.length === 0 ? (
@@ -63,6 +74,22 @@ export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }:
           {games.map((game) => (
             <li key={game.id} className="nintendo-card">
               <div className="cover-wrapper">
+                <button
+                  type="button"
+                  className="cover-delete-btn"
+                  onClick={handleDeleteClick(game)}
+                  aria-label={`Eliminar ${game.title}`}
+                >
+                  ×
+                </button>
+                <button
+                  type="button"
+                  className="cover-edit-btn"
+                  onClick={handleEditClick(game)}
+                  aria-label={`Editar ${game.title}`}
+                >
+                  ✎
+                </button>
                 {game.coverUrl === '' ? (
                   <div className="cover-fallback">{game.title}</div>
                 ) : (
@@ -80,17 +107,28 @@ export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }:
                   {game.completed ? 'Completado' : 'Pendiente'}
                 </p>
               </div>
-              <div className="actions">
-                <button type="button" onClick={handleEditClick(game)}>
-                  Editar
-                </button>
-                <button type="button" className="danger" onClick={handleDeleteClick(game.id)}>
-                  Eliminar
-                </button>
-              </div>
             </li>
           ))}
         </ul>
+      )}
+
+      {pendingDeleteGame !== null && (
+        <div className="delete-modal-overlay" role="dialog" aria-modal="true">
+          <div className="delete-modal">
+            <h3>Eliminar videojuego</h3>
+            <p>
+              ¿Seguro que quieres eliminar <strong>{pendingDeleteGame.title}</strong>?
+            </p>
+            <div className="actions delete-modal-actions">
+              <button type="button" className="danger" onClick={handleConfirmDelete}>
+                Eliminar
+              </button>
+              <button type="button" className="secondary" onClick={handleCancelDelete}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </section>
   );

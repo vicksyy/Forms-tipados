@@ -25,11 +25,34 @@ body {
 
 h1 {
   margin: 0 0 18px;
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #dfe7ef;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.app-title-icon {
+  width: 28px;
+  height: 28px;
+  color: #dfe7ef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-title-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .card {
@@ -136,6 +159,22 @@ h1 {
   color: #8fa1b4;
 }
 
+.selected-cover-preview {
+  width: 130px;
+  border: 1px solid #4a5f74;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #1c2630;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+}
+
+.selected-cover-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+}
+
 input,
 select,
 button {
@@ -224,6 +263,40 @@ input::placeholder {
   font-size: 0.95rem;
 }
 
+.status-chooser {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.status-choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #4f6275;
+  background: #202a33;
+  color: #c7d3df;
+  min-height: 42px;
+}
+
+.status-choice-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.status-choice.active.completed {
+  border-color: #63b97a;
+  background: rgba(99, 185, 122, 0.18);
+  color: #c8f3d4;
+}
+
+.status-choice.active.pending {
+  border-color: #d98a3a;
+  background: rgba(217, 138, 58, 0.2);
+  color: #ffd6ad;
+}
+
 .actions {
   display: flex;
   gap: 8px;
@@ -281,6 +354,40 @@ button.danger {
   width: min(560px, 100%);
 }
 
+.delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 31, 41, 0.68);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 30;
+}
+
+.delete-modal {
+  width: min(420px, 100%);
+  background: #24303b;
+  border: 1px solid #41576d;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
+}
+
+.delete-modal h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: #f0f5fa;
+}
+
+.delete-modal p {
+  margin: 0 0 12px;
+  color: #c2cfdb;
+}
+
+.delete-modal-actions {
+  justify-content: space-between;
+}
+
 .nintendo-shell {
   background: transparent;
   border: 0;
@@ -332,6 +439,7 @@ button.danger {
 
 .nintendo-subbar {
   display: flex;
+  align-items: center;
   gap: 18px;
   color: #adbac7;
   font-size: 0.88rem;
@@ -368,11 +476,46 @@ button.danger {
 }
 
 .cover-wrapper {
+  position: relative;
   border-radius: 2px;
   overflow: hidden;
   border: 1px solid #4a5f74;
   background: #202d39;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.cover-edit-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #5d7387;
+  background: rgba(20, 31, 41, 0.82);
+  color: #e8eef4;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.cover-delete-btn {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #8c5d5a;
+  background: rgba(54, 23, 27, 0.82);
+  color: #ffd5cf;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .cover-image {

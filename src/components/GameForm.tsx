@@ -176,10 +176,12 @@ export default function GameForm({
     }
   };
 
-  const handleCompletedToggle = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setFormData((prev) => ({ ...prev, completed: !prev.completed }));
-  };
+  const handleSetCompleted =
+    (completed: boolean) =>
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setFormData((prev) => ({ ...prev, completed }));
+    };
 
   const handleSelectSuggestion =
     (option: GameCoverOption) =>
@@ -224,7 +226,7 @@ export default function GameForm({
     <form onSubmit={handleSubmit} className="card form-grid" aria-label="Formulario de videojuegos">
       <h2>{editingGame === null ? 'Nuevo videojuego' : 'Editar videojuego'}</h2>
 
-      <label htmlFor="title">Titulo</label>
+      <label htmlFor="title">Título</label>
       <div className="title-suggest-wrap">
         <input
           id="title"
@@ -264,6 +266,11 @@ export default function GameForm({
           </div>
         )}
       </div>
+      {formData.coverUrl !== '' && (
+        <div className="selected-cover-preview">
+          <img src={formData.coverUrl} alt={`Portada seleccionada de ${formData.title}`} />
+        </div>
+      )}
 
       <label htmlFor="platform">Plataforma</label>
       <select id="platform" name="platform" value={formData.platform} onChange={handlePlatformChange}>
@@ -274,7 +281,7 @@ export default function GameForm({
         ))}
       </select>
 
-      <label htmlFor="year">Ano de lanzamiento</label>
+      <label htmlFor="year">Año de lanzamiento</label>
       <input
         id="year"
         name="year"
@@ -285,7 +292,7 @@ export default function GameForm({
         readOnly
       />
 
-      <label>Valoracion</label>
+      <label>Valoración</label>
       <div className="rating-row" role="group" aria-label="Valorar videojuego con estrellas">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
@@ -301,22 +308,33 @@ export default function GameForm({
       </div>
 
       <label>Estado</label>
-      <button
-        type="button"
-        className={formData.completed ? 'status-toggle completed' : 'status-toggle pending'}
-        onClick={handleCompletedToggle}
-        aria-pressed={formData.completed}
-      >
-        <span className="status-icon">{formData.completed ? '✔' : '○'}</span>
-        {formData.completed ? 'Completado' : 'Pendiente'}
-      </button>
+      <div className="status-chooser" role="group" aria-label="Estado del videojuego">
+        <button
+          type="button"
+          className={formData.completed ? 'status-choice active completed' : 'status-choice completed'}
+          onClick={handleSetCompleted(true)}
+          aria-pressed={formData.completed}
+        >
+          <span className="status-choice-icon">◉</span>
+          Completado
+        </button>
+        <button
+          type="button"
+          className={!formData.completed ? 'status-choice active pending' : 'status-choice pending'}
+          onClick={handleSetCompleted(false)}
+          aria-pressed={!formData.completed}
+        >
+          <span className="status-choice-icon">◌</span>
+          Pendiente
+        </button>
+      </div>
 
       <div className="actions">
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Guardando...' : editingGame === null ? 'Crear' : 'Guardar cambios'}
+          {isSubmitting ? 'Guardando...' : editingGame === null ? 'Crear' : 'Guardar'}
         </button>
         <button type="button" className="secondary" onClick={handleCancelClick} disabled={isSubmitting}>
-          {editingGame === null ? 'Cerrar' : 'Cancelar edicion'}
+          {editingGame === null ? 'Cerrar' : 'Cancelar'}
         </button>
       </div>
     </form>
