@@ -1,31 +1,16 @@
-# Gestion de formularios tipados (React + TypeScript)
+# GesGame
 
-Aplicacion de ejemplo para registrar videojuegos (PS1, PS2, PS3, PS4, PS5, Nintendo y PC) con formulario totalmente tipado.
+Aplicación React + TypeScript para crear, editar y listar videojuegos con formulario tipado.
 
-## Requisitos cubiertos
+## Uso
 
-- Componente padre con estado principal: `src/components/GameManager.tsx`
-- Componente formulario: `src/components/GameForm.tsx`
-- Componente listado: `src/components/GameList.tsx`
-- Props tipadas entre componentes (sin `any`)
-- Modelo tipado: `src/types.ts`
-- `useState` con tipos explicitos en todos los estados
-- Eventos tipados:
-  - `ChangeEvent<HTMLInputElement>`
-  - `ChangeEvent<HTMLSelectElement>`
-  - `FormEvent<HTMLFormElement>`
-  - `MouseEvent<HTMLButtonElement>`
-- Formulario controlado para crear y editar
-- TypeScript `strict: true` en `tsconfig.json`
-- Uso de Radix UI: `@radix-ui/react-checkbox`
+```bash
+npm install
+npm run dev
+```
 
-## Scripts
+## Build
 
-- `npm install`
-- `npm run dev`
-- `npm run build`
-
-## Notas
-
-- No se usa `any`
-- No se usa cast forzado con `as`
+```bash
+npm run build
+```
