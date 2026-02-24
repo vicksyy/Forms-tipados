@@ -9,12 +9,16 @@ interface GameListProps {
 }
 
 export default function GameList({ games, onStartEdit, onDelete, onOpenCreate }: GameListProps) {
-  const renderStars = (rating: number): string => {
-    if (rating <= 0) {
-      return '☆☆☆☆☆';
-    }
-
-    return `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`;
+  const renderStars = (rating: number) => {
+    return (
+      <span className="stars" aria-label={`Valoracion ${rating} de 5`}>
+        {Array.from({ length: 5 }, (_, index) => (
+          <span key={index} className={index < rating ? 'star filled' : 'star empty'}>
+            ★
+          </span>
+        ))}
+      </span>
+    );
   };
 
   const handleEditClick =

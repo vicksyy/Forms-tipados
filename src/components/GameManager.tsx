@@ -3,7 +3,7 @@ import type { MouseEvent } from 'react';
 import GameForm from './GameForm';
 import GameList from './GameList';
 import type { Platform, VideoGame } from '../types';
-import { fetchWikipediaCover } from '../lib/wikiCover';
+import { fetchGameAutofill, fetchGameCover } from '../lib/gameCover';
 
 const STORAGE_KEY = 'typed-games';
 
@@ -143,29 +143,56 @@ export default function GameManager() {
     setIsFormOpen(true);
   };
 
-  const resolveCoverUrl = async (game: Omit<VideoGame, 'id'>): Promise<string> => {
-    const trimmedCoverUrl = game.coverUrl.trim();
-    if (trimmedCoverUrl !== '') {
-      return trimmedCoverUrl;
+  const resolveCoverUrl = async (
+    game: Omit<VideoGame, 'id'>,
+    fallbackCoverUrl: string = ''
+  ): Promise<string> => {
+    if (game.coverUrl.trim() !== '') {
+      return game.coverUrl.trim();
     }
 
-    return fetchWikipediaCover(game.title, game.platform);
+    const fetchedCover = await fetchGameCover(game.title, game.platform);
+    if (fetchedCover !== '') {
+      return fetchedCover;
+    }
+
+    return fallbackCoverUrl;
   };
 
   const handleCreateGame = async (newGame: Omit<VideoGame, 'id'>) => {
-    const resolvedCoverUrl = await resolveCoverUrl(newGame);
-    const gameWithId: VideoGame = {
-      id: createId(),
-      ...newGame,
-      coverUrl: resolvedCoverUrl
-    };
+    const selectedCoverUrl = newGame.coverUrl.trim();
+
+    const gameWithId: VideoGame =
+      selectedCoverUrl !== ''
+        ? {
+            id: createId(),
+            ...newGame,
+            coverUrl: selectedCoverUrl
+          }
+        : await (async () => {
+            const normalizedTitle = newGame.title.trim();
+            const autofill = await fetchGameAutofill(normalizedTitle, newGame.platform, newGame.year);
+            const resolvedCoverUrl =
+              autofill.coverUrl !== '' ? autofill.coverUrl : await resolveCoverUrl(newGame, '');
+
+            return {
+              id: createId(),
+              ...newGame,
+              title: autofill.title,
+              platform: autofill.platform,
+              year: autofill.year,
+              coverUrl: resolvedCoverUrl
+            };
+          })();
 
     setGames((prevGames) => [gameWithId, ...prevGames]);
     setIsFormOpen(false);
   };
 
   const handleUpdateGame = async (id: string, updatedGame: Omit<VideoGame, 'id'>) => {
-    const resolvedCoverUrl = await resolveCoverUrl(updatedGame);
+    const existingGame = games.find((game) => game.id === id);
+    const fallbackCoverUrl = existingGame?.coverUrl ?? '';
+    const resolvedCoverUrl = await resolveCoverUrl(updatedGame, fallbackCoverUrl);
     setGames((prevGames) =>
       prevGames.map((game) =>
         game.id === id

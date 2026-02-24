@@ -51,9 +51,89 @@ h1 {
   color: #f5f8fb;
 }
 
+.form-hint {
+  margin: 0 0 4px;
+  color: #9bb0c5;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
 .form-grid label {
   color: #c2ceda;
   font-size: 0.9rem;
+}
+
+.title-suggest-wrap {
+  position: relative;
+}
+
+.suggestions-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 25;
+}
+
+.cover-picker {
+  border: 1px solid #41576d;
+  background: #202a33;
+  border-radius: 3px;
+  padding: 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cover-hint {
+  margin: 0;
+  color: #98a9ba;
+  font-size: 0.85rem;
+}
+
+.cover-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 8px;
+}
+
+.cover-option {
+  padding: 0;
+  border: 1px solid #4d6175;
+  background: #1b252e;
+  border-radius: 2px;
+  overflow: hidden;
+  line-height: 1;
+  text-align: left;
+}
+
+.cover-option.active {
+  border-color: #7bd88f;
+  box-shadow: 0 0 0 1px rgba(123, 216, 143, 0.35);
+}
+
+.cover-option-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center;
+  background: #15202a;
+}
+
+.cover-option-title {
+  display: block;
+  padding: 6px;
+  font-size: 0.66rem;
+  line-height: 1.2;
+  color: #b8c7d5;
+  min-height: 30px;
+}
+
+.cover-option-meta {
+  display: block;
+  padding: 0 6px 6px;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  color: #8fa1b4;
 }
 
 input,
@@ -292,13 +372,15 @@ button.danger {
   overflow: hidden;
   border: 1px solid #4a5f74;
   background: #202d39;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
 }
 
 .cover-image {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center top;
   background: #1d2731;
 }
 
@@ -333,8 +415,20 @@ button.danger {
 
 .game-rating {
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #ffd166;
   letter-spacing: 0.04em;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 1px;
+}
+
+.star.filled {
+  color: #ffd166;
+}
+
+.star.empty {
+  color: #5f6f7f;
 }
 
 .game-status {
