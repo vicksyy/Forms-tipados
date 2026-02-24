@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
 import type { Platform, VideoGame } from '../types';
 import { fetchGameCoverOptions, type GameCoverOption } from '../lib/gameCover';
+import * as Select from '@radix-ui/react-select';
 
 const PLATFORMS: Platform[] = ['PS1', 'PS2', 'PS3', 'PS4', 'PS5', 'Nintendo', 'PC'];
 
@@ -163,8 +164,7 @@ export default function GameForm({
     setSelectedSuggestionId('');
   };
 
-  const handlePlatformChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
+  const handlePlatformChange = (value: string) => {
     if (!isPlatform(value)) {
       return;
     }
@@ -273,13 +273,23 @@ export default function GameForm({
       )}
 
       <label htmlFor="platform">Plataforma</label>
-      <select id="platform" name="platform" value={formData.platform} onChange={handlePlatformChange}>
-        {PLATFORMS.map((platform) => (
-          <option key={platform} value={platform}>
-            {platform}
-          </option>
-        ))}
-      </select>
+      <Select.Root value={formData.platform} onValueChange={handlePlatformChange}>
+        <Select.Trigger id="platform" className="radix-select-trigger" aria-label="Plataforma">
+          <Select.Value />
+          <Select.Icon className="radix-select-icon">▾</Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content className="radix-select-content" position="popper" sideOffset={6}>
+            <Select.Viewport className="radix-select-viewport">
+              {PLATFORMS.map((platform) => (
+                <Select.Item key={platform} value={platform} className="radix-select-item">
+                  <Select.ItemText>{platform}</Select.ItemText>
+                </Select.Item>
+              ))}
+            </Select.Viewport>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
 
       <label htmlFor="year">Año de lanzamiento</label>
       <input

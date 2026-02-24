@@ -195,6 +195,51 @@ input::placeholder {
   color: #91a2b4;
 }
 
+.radix-select-trigger {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #41576d;
+  border-radius: 3px;
+  background: #202a33;
+  color: #f0f5fa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.radix-select-icon {
+  color: #a8b7c6;
+}
+
+.radix-select-content {
+  overflow: hidden;
+  border: 1px solid #41576d;
+  border-radius: 3px;
+  background: #202a33;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  z-index: 40;
+}
+
+.radix-select-viewport {
+  padding: 4px;
+}
+
+.radix-select-item {
+  color: #f0f5fa;
+  padding: 8px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.radix-select-item:hover {
+  background: rgba(123, 216, 143, 0.16);
+}
+
+.radix-select-item[data-highlighted] {
+  outline: none;
+  background: rgba(123, 216, 143, 0.16);
+}
+
 .inline-checkbox {
   display: flex;
   align-items: center;
@@ -365,12 +410,18 @@ button.danger {
 }
 
 .delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 31;
   width: min(420px, 100%);
   background: #24303b;
   border: 1px solid #41576d;
   border-radius: 4px;
   padding: 16px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
+  outline: none;
 }
 
 .delete-modal h3 {
@@ -518,6 +569,21 @@ button.danger {
   line-height: 1;
 }
 
+.radix-tooltip-content {
+  border: 1px solid #4f6275;
+  background: #202a33;
+  color: #dce6ef;
+  border-radius: 3px;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  line-height: 1;
+  z-index: 45;
+}
+
+.radix-tooltip-arrow {
+  fill: #202a33;
+}
+
 .cover-image {
   display: block;
   width: 100%;
@@ -525,6 +591,17 @@ button.danger {
   object-fit: cover;
   object-position: center top;
   background: #1d2731;
+}
+
+.cover-rating-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 6px 8px;
+  background: linear-gradient(to top, rgba(7, 11, 16, 0.94), rgba(7, 11, 16, 0.42));
+  display: flex;
+  justify-content: center;
 }
 
 .cover-fallback {
